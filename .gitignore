@@ -1,0 +1,13 @@
+
+# Ignore everything
+*
+# But descend into directories
+!*/
+# Include files
+!/.gitignore
+!/pom.xml
+# Recursively allow files under subtrees
+!/src/**/*.java
+!/target/**/*.jar
+
+
