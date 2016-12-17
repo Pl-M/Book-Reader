@@ -8,7 +8,7 @@ There are several reasons I decided to create it.
 First and foremost I have studied Java for a while and the best way to study a new programming language is to write something in it.
 The other reason is that I like reading books on my PC and I miss some features (e.g. smooth autoscrolling).
 
-### The main features of BookJ Reader
+### The main features of BookJP Reader
 * It is cross-platform (it is Java).
 * It has the ability to smoothly scroll text.
 * There is an autoscroll option with speed adjustments.
