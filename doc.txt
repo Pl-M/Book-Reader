@@ -1,0 +1,14 @@
+ 
+Documentation to the program as FAQ
+
+How to copy visible text to clipboard?
+There is an edit mode in the program. Press Ctrl+Enter to enter it. You can edit text and copy to clipboard. No matter what you do in this mode the initial file won’t change.To exit the mode press Esc.
+
+How can I hide top panel?
+Move mouse cursor to the bottom of the window.
+
+How to move to other parts of the book?
+There is a text label showing current position (percents) in the top part of the screen. Pressing on it will invoke a new dialog with new position options.
+
+The text scrolling is not smooth, what can I do?
+Generally this means that your computer isn’t powerfull enough to display graphic smoothly. The solutions could be: to decrease scrolling speed, to change quality settings and to increase indentations.
