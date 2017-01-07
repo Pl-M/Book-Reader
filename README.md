@@ -3,7 +3,6 @@
 This is a program to read books on PC.
 
 ### Why does this program exist?
-
 There are several reasons I decided to create it. 
 First and foremost I have studied Java for a while and the best way to study a new programming language is to write something in it.
 The other reason is that I like reading books on my PC and I miss some features (e.g. smooth autoscrolling).
@@ -25,6 +24,9 @@ It uses JavaFX so you may need to install it as well (it isn't always preinstall
 
 ### How to start it
 There are runnable jar files in the target directory.
+
+### Documentation
+![doc](doc.txt)
 
 ### Screenshots
 ![Book Reader](main.jpg) ![Settings](settings.jpg) 
