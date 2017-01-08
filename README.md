@@ -15,8 +15,7 @@ The other reason is that I like reading books on my PC and I miss some features 
 * It is portable - all settings are saved in the same directory as the program.
 
 ### What are current limitations
-* The program is in development which means that it can posess bugs and lack some essential features.
-* It doesn't support images in text files.
+* The program doesn't support images and is currently limited to txt, fb2 and html formats.
 
 ### Requirements
 To use this program you need to have Java 8.
