@@ -13,6 +13,9 @@ There is a text label showing current position (percents) in the top part of the
 The text scrolling is not smooth, what can I do?
 Generally this means that your computer isn’t powerfull enough to display graphic smoothly. The solutions could be: to decrease scrolling speed, to change quality settings and to increase indentations.
 
+What for are quality settings?
+By changing quality settings you select another algorithm for displaying moving text. An approximate approach is 0 – for lower quality, 2 – for higher quality, though on some systems the difference may be indistinguishable.
+
 I want to open a new book and don’t lose progress in the currently open one, is it possible?
 The program saves all opened books in the book shelf (it is accessible through the menu). You can always find your current book there with the saved progress and encoding (if this is a txt file).
 
