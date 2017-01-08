@@ -15,3 +15,7 @@ Generally this means that your computer isn’t powerfull enough to display grap
 
 I want to open a new book and don’t lose progress in the currently open one, is it possible?
 The program saves all opened books in the book shelf (it is accessible through the menu). You can always find your current book there with the saved progress and encoding (if this is a txt file).
+
+How can I select encoding for text file?
+Choosing encoding is available only for txt files. Press open new file and choose in extentions list encoded text. 
+If opened file has wrong encoding try to open it again as described above and choose another encoding.
