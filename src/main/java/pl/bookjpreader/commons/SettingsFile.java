@@ -20,24 +20,26 @@ public class SettingsFile {
 
     private final Properties fileProperties;
     private final DisplayOptions displayOptions;
+    private final MinorOptions minorOptions;
     private final Path filePath;
 
-    private SettingsFile(DisplayOptions displayOptions, Path filePath) {
+    private SettingsFile(ProgramSettings options, Path filePath) {
         /*
          * @param displayOptions: options to save/load; this class
          * doesn't return a new value it changes displayOptions;
          * @param filePath: where to save/ from where to load options.
          */
-        this.displayOptions = displayOptions;
+        this.displayOptions = options.displayOptions;
+        this.minorOptions = options.minorOptions;
         this.filePath = filePath;
         fileProperties = new Properties();
     }
-    public static void load(DisplayOptions displayOptions, Path filePath){
-        SettingsFile file = new SettingsFile(displayOptions, filePath);
+    public static void load(ProgramSettings options, Path filePath){
+        SettingsFile file = new SettingsFile(options, filePath);
         file.load();
     }
-    public static void save(DisplayOptions displayOptions, Path filePath){
-        SettingsFile file = new SettingsFile(displayOptions, filePath);
+    public static void save(ProgramSettings options, Path filePath){
+        SettingsFile file = new SettingsFile(options, filePath);
         file.save();
     }
 
@@ -60,6 +62,10 @@ public class SettingsFile {
                 String.valueOf(displayOptions.getHIndentation()));
         fileProperties.setProperty(Headers.LINE_SPACING.toString(),
                 String.valueOf(displayOptions.getLineSpacing()));
+        fileProperties.setProperty(Headers.QUALITY.toString(),
+                String.valueOf(displayOptions.getQuality()));
+        fileProperties.setProperty(Headers.SCROLL_SPEED.toString(),
+                String.valueOf(minorOptions.getScrollSpeed()));
 
         try{
             fileProperties.store(Files.newOutputStream(filePath), "BOOKREADER SETTINGS");
@@ -89,9 +95,17 @@ public class SettingsFile {
 
         // Load display options.
         String property;
+        property = fileProperties.getProperty(Headers.SCROLL_SPEED.toString());
+        if (property != null)
+            minorOptions.setScrollSpeed(Double.valueOf(property));
+
         property = fileProperties.getProperty(Headers.HORIZONTAL_INDENT.toString());
         if (property != null)
             displayOptions.setHIndentation(Double.valueOf(property));
+
+        property = fileProperties.getProperty(Headers.QUALITY.toString());
+        if (property != null)
+            displayOptions.setQuality(Integer.valueOf(property));
 
         property = fileProperties.getProperty(Headers.VERTICAL_INDENT.toString());
         if (property != null)
@@ -137,7 +151,10 @@ public class SettingsFile {
         BACKGROUND_COLOR ("BACKGROUND COLOR"),
         VERTICAL_INDENT ("VERTICAL INDENTATION"),
         HORIZONTAL_INDENT ("HORIZONTAL INDENTATION"),
-        LINE_SPACING ("LINE SPACING");
+        LINE_SPACING ("LINE SPACING"),
+        QUALITY ("QUALITY"),
+        SCROLL_SPEED ("SCROLL SPEED");
+
         private final String name;
 
         Headers(String name) {

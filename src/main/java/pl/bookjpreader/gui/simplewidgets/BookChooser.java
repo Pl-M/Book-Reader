@@ -33,7 +33,7 @@ public class BookChooser {
         fileChooser = new FileChooser();
         fileChooser.setTitle("Select a file");
         FileChooser.ExtensionFilter encodingFilter =
-                new FileChooser.ExtensionFilter("Select encoding", "*.txt");
+                new FileChooser.ExtensionFilter("Select encoding", "*.*");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All supported formats", "*.txt", "*.fb2", "*.html", "*.htm"),
                 encodingFilter,

@@ -5,7 +5,6 @@
 package pl.bookjpreader.gui;
 
 import java.util.Optional;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuButton;
@@ -40,7 +39,6 @@ public class TopPane extends BorderPane{
 
     final private ProgramSettings settings;
     final private Stage primaryStage;
-    final private DoubleProperty scrollSpeed;
     //final private Label fileNameWidget;
 
     final private CheckMenuItem checkFullScreen;
@@ -57,7 +55,6 @@ public class TopPane extends BorderPane{
         openBookShelf = new MenuItem("Book Shelf");
         closeProgramItem = new MenuItem("Exit");
 
-        scrollSpeed = settings.minorOptions.scrollSpeed;
 
         setBackground(new Background(new BackgroundFill(
                 Color.WHITE, null, null)));
@@ -68,10 +65,6 @@ public class TopPane extends BorderPane{
         leftBox.getChildren().add(getMenuButton());
         setLeft(leftBox);
 
-        //fileNameWidget = getFileNameWidget();
-        //leftBox.setHgrow(fileNameWidget, Priority.ALWAYS);
-        //leftBox.getChildren().add(fileNameWidget);
-
         HBox centerBox = new HBox();
         centerBox.setSpacing(8);
         //centerBox.setAlignment(Pos.CENTER);
@@ -81,8 +74,6 @@ public class TopPane extends BorderPane{
         setCenter(centerBox);
 
         setRight(new ClockWidget(24));
-
-        //mainContainer.setPrefHeight(percent.getLayoutBounds().getHeight());
 
         setKeyBindings();
     }
@@ -107,7 +98,6 @@ public class TopPane extends BorderPane{
     private MenuButton getMenuButton(){
         final MenuButton prefButton = new MenuButton("Preferences");
         prefButton.setStyle( // make it semiround
-                //"-fx-background-radius: 0 0 10 10;"
                 "-fx-background-radius: 0 0 10 0;"
                 +"-fx-border-color: transparent;"
                 );
@@ -154,13 +144,14 @@ public class TopPane extends BorderPane{
     }
     private Spinner<Double> getSpeedSelector(){
         final Spinner<Double> speedSelector = new Spinner<>();
+        double currentSpeed = settings.minorOptions.getScrollSpeed();
         speedSelector.setValueFactory(new SpinnerValueFactory
-                .DoubleSpinnerValueFactory(0.1, 10, 1, 0.2));
+                .DoubleSpinnerValueFactory(0.1, 10, currentSpeed, 0.2));
         speedSelector.setMaxWidth(80);
         speedSelector.setEditable(true);
 
         speedSelector.valueProperty().addListener((obs, oldValue, newValue) -> {
-            scrollSpeed.set(newValue);
+            settings.minorOptions.setScrollSpeed(newValue.doubleValue());
         });
         // Add tooltip.
         Tooltip speedSelectorTooltip = new Tooltip();

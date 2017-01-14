@@ -105,4 +105,5 @@ public class FB2File implements BookText{
                 sb.append(el.getTextContent());
         }
     }
+
 }

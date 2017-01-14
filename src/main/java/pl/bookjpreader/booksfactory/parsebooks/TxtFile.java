@@ -41,4 +41,10 @@ public class TxtFile implements BookText{
 
         return new String(b, encoding).replaceAll("\\r\\n", "\n");
     }
+
+    public String getInfo() throws Exception{
+        return "filename: " + filePath.toString()
+             + "size: ";
+    }
+
 }

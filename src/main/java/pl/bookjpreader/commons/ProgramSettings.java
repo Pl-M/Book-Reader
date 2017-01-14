@@ -92,7 +92,7 @@ public class ProgramSettings {
          * Save All settings to files.
          */
         if (SETTINGS_FILEPATH != null)
-            SettingsFile.save(displayOptions, SETTINGS_FILEPATH);
+            SettingsFile.save(this, SETTINGS_FILEPATH);
 
         if (BOOKS_FILEPATH != null)
             BookShelfFile.save(bookShelf, BOOKS_FILEPATH);
@@ -102,7 +102,7 @@ public class ProgramSettings {
          * Load settings from files.
          */
         if (SETTINGS_FILEPATH != null)
-            SettingsFile.load(displayOptions, SETTINGS_FILEPATH);
+            SettingsFile.load(this, SETTINGS_FILEPATH);
 
         if (BOOKS_FILEPATH != null)
             BookShelfFile.load(bookShelf, BOOKS_FILEPATH);

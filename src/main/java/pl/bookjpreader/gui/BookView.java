@@ -12,11 +12,13 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
@@ -50,7 +52,8 @@ public class BookView{
     final private AnchorPane mainContainer;
     final private ImagesContainer textImagesContainer;
     final private Text richText;
-    final private TextArea editModeContainer;
+    final private VBox editModeContainer;
+    final private TextArea editModeText;
 
     final private TranslateTransition moveAnimation;
     final private TranslateTransition scrollAnimation;
@@ -86,15 +89,22 @@ public class BookView{
         AnchorPane.setRightAnchor(textImagesContainer, 0.0);
         // textImagesContainer will be added to mainContainer after new book is initialized.
 
-        editModeContainer = new TextArea();
-        editModeContainer.setWrapText(true);
-        editModeContainer.setEditable(true);
+        editMode = new SimpleBooleanProperty(false);
+
+        editModeText = new TextArea();
+        editModeText.setWrapText(true);
+        editModeText.setEditable(true);
+        editModeContainer = new VBox();
+        Button exitEditModeBtn = new Button("Press Esc to exit");
+        exitEditModeBtn.setOnAction(ev -> editMode.set(false));
+
+        editModeContainer.getChildren().add(exitEditModeBtn);
+        editModeContainer.getChildren().add(editModeText);
+
         AnchorPane.setTopAnchor(editModeContainer, 0.0);
         AnchorPane.setBottomAnchor(editModeContainer, 0.0);
         AnchorPane.setLeftAnchor(editModeContainer, 0.0);
         AnchorPane.setRightAnchor(editModeContainer, 0.0);
-
-        editMode = new SimpleBooleanProperty(false);
 
         richText = new Text();
 
@@ -131,8 +141,8 @@ public class BookView{
             onChangeDisplaySettings();
             rebuildScene();
         });
-        settings.minorOptions.scrollSpeed.addListener((obs, oldSpeed, newSpeed)
-                -> onScrollSpeedChanged(newSpeed.doubleValue()));
+        settings.minorOptions.scrollSpeedProperty.addListener(ev ->
+        onScrollSpeedChanged());
 
         settings.bookShelf.currentBook.addListener((obs, oldBook, newBook)
                 -> onOpenNewBook());
@@ -187,7 +197,7 @@ public class BookView{
             else if (keyEvent.getCode() == KeyCode.PAGE_DOWN)
                 doAnimationMove(-visibleHeight, 0.3);
         });
-        editModeContainer.setOnKeyReleased(keyEvent -> {
+        editModeText.setOnKeyReleased(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ESCAPE)
                 editMode.set(false);
         });
@@ -221,7 +231,7 @@ public class BookView{
         if (offset < startPos || offset > endPos)
             buildNewScene(offset);
     }
-    private void onScrollSpeedChanged(double newSpeed){
+    private void onScrollSpeedChanged(){
         Animation.Status status = scrollAnimation.getStatus();
         if (status == Animation.Status.RUNNING || status == Animation.Status.PAUSED){
             scrollAnimation.stop();
@@ -282,7 +292,7 @@ public class BookView{
         textImagesContainer.setLineSpacing(oneLineHeight * displayOptions.getLineSpacing());
 
         // Set edit mode settings.
-        editModeContainer.setFont(displayOptions.getTextFont());
+        editModeText.setFont(displayOptions.getTextFont());
 
         // Set quality.
         visualQuality = displayOptions.getQuality();
@@ -308,20 +318,20 @@ public class BookView{
         //Add TextArea to the main container.
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(editModeContainer);
-        editModeContainer.setText(textImagesContainer.getText());
+        editModeText.setText(textImagesContainer.getText());
 
         // Hack: Add a transition to move scroll to the given point, otherwise
         // it doesn't move.
         PauseTransition idle = new PauseTransition(Duration.seconds(0.01));
         idle.setOnFinished(ev ->
-            editModeContainer.setScrollTop(- textImagesContainer.getTranslateY()));
+            editModeText.setScrollTop(- textImagesContainer.getTranslateY()));
         idle.play();
 
-        editModeContainer.requestFocus();
+        editModeText.requestFocus();
     }
 
     private void doExitEditMode(){
-        editModeContainer.clear();
+        editModeText.clear();
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(textImagesContainer);
         textImagesContainer.requestFocus();
@@ -356,7 +366,7 @@ public class BookView{
         scrollAnimation.setFromY(posY);
         scrollAnimation.setToY(posTo);
 
-        double speedMultiplier = settings.minorOptions.scrollSpeed.get();
+        double speedMultiplier = settings.minorOptions.getScrollSpeed();
         double scrollDuration = scrollHeight/scrollPixPerSecond/speedMultiplier;
         scrollAnimation.setDuration(Duration.seconds(scrollDuration));
         scrollAnimation.setOnFinished(a -> {

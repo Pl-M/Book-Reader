@@ -2,9 +2,14 @@
  * Copyright (c) 2016 Pavel_M-v.
  *
  *******************************************************************************/
-package pl.bookjpreader.booksfactory.parsebooks;
+package pl.bookjpreader.booksfactory;
 
 import java.nio.file.Path;
+
+import pl.bookjpreader.booksfactory.parsebooks.BookText;
+import pl.bookjpreader.booksfactory.parsebooks.FB2File;
+import pl.bookjpreader.booksfactory.parsebooks.HTMLFile;
+import pl.bookjpreader.booksfactory.parsebooks.TxtFile;
 
 
 public class FilesFactory {

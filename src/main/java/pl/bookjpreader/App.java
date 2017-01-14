@@ -73,14 +73,17 @@ public class App extends Application {
         // Enter fullscreen mode on pressing F11.
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
-        // Hide mouse cursor and top pane if cursor is in the lower part of the screen.
+        // Hide mouse cursor and top pane depending on the mode and position
+        // of the cursor.
         primaryScene.setOnMouseMoved(ev -> {
-            boolean doHide = bookWidget.editMode.get()
-                    || ev.getSceneY() > primaryScene.getHeight()*9/10;
-            hideTopPane(doHide);
+            boolean isInBottom = ev.getSceneY() > primaryScene.getHeight()*9/10;
+            hideTopPane(bookWidget.editMode.get() || isInBottom);
+            hideMouseCursor(!bookWidget.editMode.get() && isInBottom);
         });
-        bookWidget.editMode.addListener(ev -> hideTopPane(bookWidget.editMode.get()));
-
+        bookWidget.editMode.addListener(ev -> {
+            hideTopPane(bookWidget.editMode.get());
+            hideMouseCursor(false);
+        });
 
         // Change background.
         settings.displayOptions.property.addListener(ev -> onBackgroundChange());
@@ -105,6 +108,16 @@ public class App extends Application {
             // Show topPane.
             if (!mainBorder.getChildren().contains(topPane))
                 mainBorder.getChildren().add(topPane);
+            primaryScene.setCursor(Cursor.DEFAULT);
+        }
+    }
+    public void hideMouseCursor(boolean doHide){
+        if (doHide){
+            // Hide Mouse cursor.
+            primaryScene.setCursor(Cursor.NONE);
+        }
+        else{
+            // Show Mouse cursor.
             primaryScene.setCursor(Cursor.DEFAULT);
         }
     }

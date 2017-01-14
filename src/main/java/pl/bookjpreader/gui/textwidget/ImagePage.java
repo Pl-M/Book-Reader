@@ -9,6 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+/*
+ * This class is based on ImageView widget.
+ * It consumes more memory than a class based on Text,
+ * but can have better quality.
+ * It may have an exception problem with high length of the image.
+ */
 public class ImagePage extends ImageView implements TextImage{
 
     final private String textString; // use this to work with text string

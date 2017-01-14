@@ -6,8 +6,6 @@ package pl.bookjpreader.booksfactory;
 
 import java.nio.file.Path;
 
-import pl.bookjpreader.booksfactory.parsebooks.FilesFactory;
-
 /*
  * This class contains all information about a current book such as
  * its encoding, length, path, etc.
@@ -41,7 +39,7 @@ public class BookFile{
         /*
          * @param filePath: path of the file;
          * @param encoding: encoding of the file, currently it is only needed
-         * for plain text files.
+         * for plain text files for other files it is ignored.
          */
         this.filepath = filepath;
         reader = null;
@@ -78,10 +76,9 @@ public class BookFile{
 
     public Reader getReader() throws Exception{
         /*
-         * @return: reader may be initialized with default values
-         * if there was an error reading the file.
-         * Check this with isRead parameter.
-         *
+         * @return: reader if it is already initialized or
+         * initialize it. Throws error if reader can't be initialized:
+         * file is not available, etc.
          */
         if (reader != null)
             return reader;
@@ -91,10 +88,11 @@ public class BookFile{
     }
     public static class Reader {
         /*
-         * @param isRead: if true than error has occurred during reading the file.
+         * @param maxParagraphLength: if paragraph exceeds this limit it will be split.
          */
         final public int textLength;
         final private String fileFullText;
+        final private int maxParagraphLength = 500;
 
         public Reader(Path filepath, String encoding) throws Exception{
             /*
@@ -140,10 +138,14 @@ public class BookFile{
             int end = fileFullText.indexOf("\n", pos + length);
             if (end == -1)
                 end = textLength;
-            if (end - pos > length + 800) // paragraph is too long
-                end = pos + length + 800;
 
-            // Add not-breaking spaces before each paragraph.
+            int maxEnd = pos + length + maxParagraphLength;
+            if (end > maxEnd){ // paragraph is too long
+                // Search the nearest space.
+                end = fileFullText.indexOf(" ", maxEnd);
+                if (end == -1 || (end - maxEnd) > 100)
+                    end = maxEnd;
+            }
 
             // Include newline to the end.
             return fileFullText.substring(pos, end + 1);
@@ -172,8 +174,13 @@ public class BookFile{
             else
                 begin += 1; // exclude newline from the beginning
 
-            if (newPos - begin > length + 800) // paragraph is too long
-                begin = newPos - 800;
+            int minBegin = newPos - length - maxParagraphLength;
+            if (begin < minBegin){ // paragraph is too long
+                // Search the nearest space.
+                begin = fileFullText.lastIndexOf(" ", minBegin);
+                if (begin == -1 || begin < minBegin - 100)
+                    begin = minBegin;
+            }
 
             return fileFullText.substring(begin, newPos);
         }
