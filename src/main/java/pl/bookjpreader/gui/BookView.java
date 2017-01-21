@@ -118,12 +118,10 @@ public class BookView{
         scrollAnimation.setInterpolator(Interpolator.LINEAR);
         //moveAnimation.setInterpolator(Interpolator.DISCRETE);
 
-
         setKeyBindings();
         onChangeDisplaySettings();
         // Show a book if it is available.
         onOpenNewBook();
-
 
         // Listen to changes.
         mainContainer.widthProperty().addListener(ev ->{
@@ -152,6 +150,8 @@ public class BookView{
                 onCursorPositionChanged(offset);
             }
         });
+        settings.bookShelf.stopAnimation.addListener(ev
+            -> scrollAnimation.stop());
 
         editMode.addListener((obs, oldValue, newValue) -> {
             if (newValue)
@@ -597,7 +597,7 @@ public class BookView{
         buildNewScene(textImagesContainer.getVisibleStartOffset());
     }
     private void buildNewScene(int offset){
-        /* Build completely new scene at the given offset position.
+        /* Build a completely new scene at the given offset position.
          * @param offset: start position to show new image.
          */
         if (bookReader == null)
@@ -617,8 +617,12 @@ public class BookView{
             if (diff > 0)
                 textImagesContainer.setTranslateY(-diff);
         }
-        else
+        else{
+            // Start from space to not appear between the word.
+            offset = bookReader.posRoundLeft(offset, 50);
+
             textImagesContainer.addBottomImage(getNextPageImage(offset, visibleHeight));
+        }
 
         updateCursor();
     }

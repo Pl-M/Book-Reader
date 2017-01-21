@@ -26,6 +26,9 @@ public class testBookFile extends TestCase {
 
     @Test
     public void testNext(){
+        /*
+         * Test that getNextBlock doesn't add new fragments or miss any part of the book.
+         */
         Reader reader = new BookFile.Reader(book);
 
         StringBuilder newBook = new StringBuilder();
@@ -41,6 +44,9 @@ public class testBookFile extends TestCase {
     }
     @Test
     public void testPrevious(){
+        /*
+         * Test that getPreviousBlock doesn't add new fragments or miss any part of the book.
+         */
         Reader reader = new BookFile.Reader(book);
 
         StringBuilder newBook = new StringBuilder();
@@ -53,5 +59,38 @@ public class testBookFile extends TestCase {
         }
         assertTrue(newBook.length() > 1);
         assertEquals(book, newBook.toString());
+    }
+    @Test
+    public void testPercentConversion(){
+        /*
+         * Test that conversion from offset to percent and back gives the
+         * same result.
+         */
+        Reader r = new BookFile.Reader(book);
+
+        int pos = 0;
+        for (int i = 4; i > 0; i--){
+            assertEquals(pos, r.getOffsetFromPercent(r.getPercentFromOffset(pos)));
+            pos = r.textLength/i;
+            assertTrue(pos > 0); // just to be sure
+        }
+     }
+    @Test
+    public void testPosRound(){
+        /*
+         * Test posRoundLeft and posRoundRight functions. 
+         */
+        Reader r = new BookFile.Reader("text with spaces");
+
+        assertEquals(r.posRoundLeft(7, 1), 7);
+        assertEquals(r.posRoundLeft(7, 0), 7);
+        assertEquals(r.posRoundLeft(7, 5), 4);
+        assertEquals(r.posRoundLeft(7, 25), 4);
+
+        assertEquals(r.posRoundRight(7, 1), 7);
+        assertEquals(r.posRoundRight(7, 0), 7);
+        assertEquals(r.posRoundRight(7, 5), 9);
+        assertEquals(r.posRoundRight(7, 25), 9);
+        
     }
 }

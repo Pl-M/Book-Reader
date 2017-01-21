@@ -39,12 +39,14 @@ public class TopPane extends BorderPane{
 
     final private ProgramSettings settings;
     final private Stage primaryStage;
-    //final private Label fileNameWidget;
 
     final private CheckMenuItem checkFullScreen;
     final private MenuItem openFileItem;
     final private MenuItem openBookShelf;
+    final private MenuItem searchTextItem;
     final private MenuItem closeProgramItem;
+
+    private String searchString = ""; // To save last search string.
 
     public TopPane(ProgramSettings settings, Stage primaryStage){
 
@@ -54,7 +56,7 @@ public class TopPane extends BorderPane{
         openFileItem = new MenuItem("Open new File");
         openBookShelf = new MenuItem("Book Shelf");
         closeProgramItem = new MenuItem("Exit");
-
+        searchTextItem = new MenuItem("Search");
 
         setBackground(new Background(new BackgroundFill(
                 Color.WHITE, null, null)));
@@ -90,9 +92,23 @@ public class TopPane extends BorderPane{
                 KeyCombination.CONTROL_DOWN);
         openBookShelf.setAccelerator(openBookShelfCombination);
 
+        KeyCodeCombination searchTextCombination = new KeyCodeCombination(KeyCode.F,
+                KeyCombination.CONTROL_DOWN);
+        searchTextItem.setAccelerator(searchTextCombination);
+
         KeyCodeCombination closeProgramCombination = new KeyCodeCombination(KeyCode.X,
                 KeyCombination.CONTROL_DOWN);
         closeProgramItem.setAccelerator(closeProgramCombination);
+    }
+
+    public void disableShortcuts(boolean value){
+        /*
+         * This function is used to make shortcuts inactive.
+         */
+        checkFullScreen.setDisable(value);
+        openFileItem.setDisable(value);
+        openBookShelf.setDisable(value);
+        searchTextItem.setDisable(value);
     }
 
     private MenuButton getMenuButton(){
@@ -123,6 +139,9 @@ public class TopPane extends BorderPane{
         MenuItem mIt = new MenuItem("Settings");
         prefButton.getItems().add(mIt);
         mIt.setOnAction(ev -> doOpenSettings());
+
+        prefButton.getItems().add(searchTextItem);
+        searchTextItem.setOnAction(ev -> doOpenSearchDialog());
 
         prefButton.getItems().add(checkFullScreen);
 
@@ -192,6 +211,7 @@ public class TopPane extends BorderPane{
     private void doChangePosition(){
         if (settings.bookShelf.currentBook.get() == null)
             return;
+        settings.bookShelf.stopAnimation();
 
         double currentPercent = settings.bookShelf.currentBookPosition.get();
 
@@ -220,6 +240,8 @@ public class TopPane extends BorderPane{
         /*
          * Select a new file in the dialog and open it.
          */
+        settings.bookShelf.stopAnimation();
+
         BookChooser bookChooser = new BookChooser(primaryStage);
         if (bookChooser.getFileName() != null){
             if (bookChooser.getEncoding() == null)
@@ -233,9 +255,55 @@ public class TopPane extends BorderPane{
     }
 
     private void doOpenSettings(){
+        settings.bookShelf.stopAnimation();
+
         new SettingsDialog(primaryStage, settings.displayOptions).showAndWait();
     }
+
+    private void doOpenSearchDialog(){
+        settings.bookShelf.stopAnimation();
+
+        TextInputDialog dialog = new TextInputDialog(searchString);
+        dialog.initOwner(primaryStage);
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setTitle("Search Dialog");
+        dialog.setHeaderText("Input text to search");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            searchString = result.get();
+            if (searchString.length() < 3)
+                return;
+
+            double newPos;
+            try{
+                double currentPos = settings.bookShelf.currentBookPosition.get();
+                newPos = settings.bookShelf.currentBook.get()
+                        .getReader()
+                        .searchText(searchString, currentPos);
+            }
+            catch (Exception e){
+                newPos = -1;
+            }
+
+            if (newPos == -1){
+                // Show message that nothing found
+                Alert info = new Alert(AlertType.INFORMATION);
+                info.initOwner(primaryStage);
+                info.setTitle("Nothing found");
+                info.initStyle(StageStyle.UTILITY);
+
+                info.setContentText("Nothing found");
+                info.showAndWait();
+            }
+            else{
+                settings.bookShelf.setPercentPosition(newPos);
+            }
+        }
+
+    }
     private void doOpenBookShelf(){
+        settings.bookShelf.stopAnimation();
         new BookShelfDialog(primaryStage, settings.bookShelf).showAndWait();
     }
     private void doCloseProgram(){
@@ -250,6 +318,8 @@ public class TopPane extends BorderPane{
         primaryStage.setFullScreen(!primaryStage.isFullScreen());
     }
     private void doAbout(){
+        settings.bookShelf.stopAnimation();
+
         Alert info = new Alert(AlertType.INFORMATION);
         info.initOwner(primaryStage);
         info.setTitle("About");

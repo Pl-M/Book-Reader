@@ -8,7 +8,9 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import pl.bookjpreader.booksfactory.BookFile;
 
@@ -27,15 +29,22 @@ public class BookShelf {
      * this parameter outside this class, use setPosition functions instead,
      * can contain NULL.
      * @param books: keep track of all books with their positions and encodings.
+     * @param stopAnimation: listen to this property to stop animation
+     * in the current book (e.g. scrolling), is useful to stop animation when a new
+     * dialog appear; don't change this variable to stop animation, use
+     * stopAnimation() instead.
      */
-    private final Set<BookFile> books;
-    public final ObjectProperty<BookFile> currentBook;
-    public final ObjectProperty<Double> currentBookPosition;
+
+    final private Set<BookFile> books;
+    final public ObjectProperty<BookFile> currentBook;
+    final public ObjectProperty<Double> currentBookPosition;
+    final public BooleanProperty stopAnimation;
 
     public BookShelf() {
         books = new HashSet<>();
         currentBook = new SimpleObjectProperty<>();
         currentBookPosition = new SimpleObjectProperty<>();
+        stopAnimation = new SimpleBooleanProperty(false);
 
         // Change position in the currently opened book.
         currentBookPosition.addListener((obs, oldPos, newPos) ->{
@@ -104,6 +113,12 @@ public class BookShelf {
          */
         removeBook(bookFile);
         books.add(bookFile);
+    }
+    public void stopAnimation(){
+        /*
+         * Stop animation in the current book (if available).
+         */
+        stopAnimation.set(!stopAnimation.get());
     }
 
     public void removeBook(BookFile bookFile){

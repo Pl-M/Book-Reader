@@ -112,6 +112,39 @@ public class BookFile{
             textLength = fileFullText.length();
         }
 
+        public int posRoundLeft(int startPos, int length){
+            /*
+             * This function may be used after jumping to a completely new location in the book
+             * to prevent startPos to be in the middle of the word.
+             * @param startPos: initial start position;
+             * @param length: maximum difference between new and start positions.
+             * @return: a rounded startPosition if can be found or startPos.
+             */
+
+            // Find the nearest space.
+            int spacePos = fileFullText.lastIndexOf(" ", startPos);
+            if (spacePos > 0 && startPos - spacePos < length)
+                startPos = spacePos;
+
+            return startPos;
+        }
+        public int posRoundRight(int startPos, int length){
+            /*
+             * This function may be used after jumping to a completely new location in the book
+             * to prevent startPos to be in the middle of the word.
+             * @param startPos: initial start position;
+             * @param length: maximum difference between new and start positions.
+             * @return: a rounded startPosition if can be found or startPos.
+             */
+
+            // Find the nearest space.
+            int spacePos = fileFullText.indexOf(" ", startPos);
+            if (spacePos > 0 && spacePos - startPos < length)
+                startPos = spacePos;
+
+            return startPos;
+        }
+
         public String getNextBlock(int startPos){
             return getNextBlock(startPos, 100);
         }
@@ -140,16 +173,13 @@ public class BookFile{
                 end = textLength;
 
             int maxEnd = pos + length + maxParagraphLength;
-            if (end > maxEnd){ // paragraph is too long
-                // Search the nearest space.
-                end = fileFullText.indexOf(" ", maxEnd);
-                if (end == -1 || (end - maxEnd) > 100)
-                    end = maxEnd;
-            }
+            if (end > maxEnd) // paragraph is too long
+                end = posRoundRight(maxEnd, 100);
 
             // Include newline to the end.
             return fileFullText.substring(pos, end + 1);
         }
+
         public String getPreviousBlock(int endPosition, int length){
             /*
              * @param length: block should be bigger than length (this is to eliminate
@@ -175,14 +205,26 @@ public class BookFile{
                 begin += 1; // exclude newline from the beginning
 
             int minBegin = newPos - length - maxParagraphLength;
-            if (begin < minBegin){ // paragraph is too long
-                // Search the nearest space.
-                begin = fileFullText.lastIndexOf(" ", minBegin);
-                if (begin == -1 || begin < minBegin - 100)
-                    begin = minBegin;
-            }
+            if (begin < minBegin) // paragraph is too long
+                begin = posRoundLeft(minBegin, 100);
 
             return fileFullText.substring(begin, newPos);
+        }
+
+        public double searchText(String text, double fromPercent){
+            /*
+             * Function to search text in the book, currently is case-sensitive.
+             * @param text: text to find,
+             * @param fromPercent: initial position from which to start search
+             * in percents; search is conducted from fromPos position to the end,
+             * @return: starting position of the found text in percents,
+             * -1 if the text was not found.
+             */
+            int foundPos = fileFullText.indexOf(text, getOffsetFromPercent(fromPercent));
+            if (foundPos == -1) // text not found
+                return -1;
+
+            return getPercentFromOffset(foundPos);
         }
 
         /*
@@ -200,9 +242,10 @@ public class BookFile{
         public double getPercentFromOffset(int offset){
             if (offset < 0)
                 offset = 0;
+            double percent = 100 * (double) offset / textLength;
 
             // Due to rounding percent may be more than 100.
-            return Math.min(100.0, (double) offset / (textLength / 100));
+            return Math.min(100.0, percent);
         }
     }
 }

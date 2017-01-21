@@ -82,6 +82,7 @@ public class App extends Application {
         });
         bookWidget.editMode.addListener(ev -> {
             hideTopPane(bookWidget.editMode.get());
+            topPane.disableShortcuts(bookWidget.editMode.get());
             hideMouseCursor(false);
         });
 
