@@ -8,6 +8,7 @@ First and foremost I have studied Java for a while and the best way to study a n
 The other reason is that I like reading books on my PC and I miss some features (e.g. smooth autoscrolling).
 
 ### The main features of BookJP Reader
+* It is free.
 * It is cross-platform (it is Java).
 * It has the ability to smoothly scroll text.
 * There is an autoscroll option with speed adjustments.
@@ -23,6 +24,12 @@ It uses JavaFX so you may need to install it as well (it isn't always preinstall
 
 ### How to start it
 There are runnable jar files in the target directory.
+
+### License
+The program is licensed under the terms of GPL 2.0 license.
+
+This program is using Jsoup library (https://jsoup.org) to parse HTML files which is
+licensed under the terms of MIT license.
 
 ### Documentation
 ![doc](doc.txt)
