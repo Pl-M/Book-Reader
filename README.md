@@ -32,7 +32,7 @@ This program is using Jsoup library (https://jsoup.org) to parse HTML files whic
 licensed under the terms of MIT license.
 
 ### Documentation
-![doc](doc.txt)
+Documentation to the program can be found in ![doc](doc.txt) file.
 
 ### Screenshots
 ![Book Reader](main.jpg) ![Settings](settings.jpg) 
