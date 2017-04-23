@@ -1,0 +1,53 @@
+apply plugin: 'java'
+
+group = 'pl.bookjpreader'
+version = '0.1-SNAPSHOT'
+
+description = """BookJP Reader"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def mainPath = "pl.bookjpreader.App"
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+    compile group: 'org.jsoup', name: 'jsoup', version:'1.10.1'
+    testCompile group: 'junit', name: 'junit', version:'4.12'
+}
+
+task run_pr(type: JavaExec) {
+	group = 'tasks'
+	description = 'Runs the program'
+	classpath = sourceSets.main.runtimeClasspath
+    main = mainPath
+
+    // arguments to pass to the application
+    // args = ""
+}
+
+task test_pr(dependsOn: test){
+	group = 'tasks'
+	description = test.description
+}
+
+task clean_pr(dependsOn: clean){
+	group = 'tasks'
+	description = clean.description
+}
+
+// Create a Jar with all dependencies.
+task jar_pr(type: Jar) {
+	group = 'tasks'
+	description = 'Builds jar with all dependencies.'
+	manifest {
+        attributes 'Main-Class': mainPath
+    }
+    classifier = 'all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
