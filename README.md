@@ -10,8 +10,7 @@ The other reason is that I like reading books on my PC and I miss some features 
 ### The main features of BookJP Reader
 * It is free.
 * It is cross-platform (it is Java).
-* It has the ability to smoothly scroll text.
-* There is an autoscroll option with speed adjustments.
+* It has the ability to smoothly scroll text with different speed.
 * It can read plain text (different encodings), fb2 and html files.
 * It is portable - all settings are saved in the same directory as the program.
 
