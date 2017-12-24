@@ -5,7 +5,7 @@ This is a program to read books on PC.
 ### Why does this program exist?
 There are several reasons I decided to create it. 
 First and foremost I have studied Java for a while and the best way to study a new programming language is to write something in it.
-The other reason is that I like reading books on my PC and I miss some features (e.g. smooth autoscrolling).
+The other reason is that I like reading books on my PC and I miss some features in existing programs (e.g. cross-platformity and smooth autoscrolling).
 
 ### The main features of BookJP Reader
 * It is free.
