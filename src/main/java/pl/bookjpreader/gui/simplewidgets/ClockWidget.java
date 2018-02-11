@@ -1,7 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2016 Pavel_M-v.
- *
- *******************************************************************************/
+/*
+ * Copyright (c) 2016-2018 Pavel_M-v.
+ */
 package pl.bookjpreader.gui.simplewidgets;
 
 import java.util.Calendar;
@@ -23,7 +22,7 @@ public class ClockWidget extends Label{
         this.setPadding(new Insets(0, 5, 0, 5));
     }
     private void startTicking(){
-        Timeline timeline = new Timeline(
+        final Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0),
                 m -> changeTime()),
                 new KeyFrame(Duration.seconds(1))
@@ -32,7 +31,7 @@ public class ClockWidget extends Label{
               timeline.play();
              }
     private void changeTime(){
-        Calendar time = Calendar.getInstance();
+        final Calendar time = Calendar.getInstance();
         String hour, min;
         Integer h = time.get(Calendar.HOUR);
 
@@ -43,11 +42,14 @@ public class ClockWidget extends Label{
 
         setText(hour + ":" + min);
     }
-    private String addZero(int value){
-        if (value < 10)
-            return "0" + value;
-        else
-            return String.valueOf(value);
+    private String addZero(final int value){
+        final String result;
+        if (value < 10) {
+            result = "0" + value;
+        } else {
+            result = String.valueOf(value);
+        }
 
+        return result;
     }
 }

@@ -1,7 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2016 Pavel_M-v.
- *
- *******************************************************************************/
+/*
+ * Copyright (c) 2016-2018 Pavel_M-v.
+ */
 package pl.bookjpreader;
 
 import junit.framework.Test;
@@ -35,7 +34,7 @@ public class AppTest
     }
 
     /**
-     * Rigourous Test :-)
+     * Rigorous Test :-)
      */
     public void testApp()
     {

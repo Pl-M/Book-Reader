@@ -1,7 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2016 Pavel_M-v.
- *
- *******************************************************************************/
+/*
+ * Copyright (c) 2016-2018 Pavel_M-v.
+ */
 
 /*
  * This class encapsulate dialog to choose book file.
@@ -65,7 +64,6 @@ public class BookChooser {
         dialog.setContentText("Please select the correct encoding:");
 
         Optional<String> result = dialog.showAndWait();
-        if (result.isPresent())
-            encoding = result.get();
+        result.ifPresent(s -> encoding = s);
     }
 }

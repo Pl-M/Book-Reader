@@ -1,7 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2016 Pavel_M-v.
- *
- *******************************************************************************/
+/*
+ * Copyright (c) 2016-2018 Pavel_M-v.
+ */
 package pl.bookjpreader.gui.simplewidgets;
 
 import java.util.HashSet;
@@ -20,18 +19,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.util.Callback;
-import pl.bookjpreader.booksfactory.BookFile;
+import pl.bookjpreader.booksfactory.BookEntity;
 import javafx.collections.ObservableList;
 
-public class BookTable extends TableView<BookFile> {
-    /*
-     * @param books: contains all initially loaded books to the widget;
-     * @param obsBooks: contains all books shown in the widget, this param is used
-     * to get currently available books in the table.
+public class BookTable extends TableView<BookEntity> {
+    /**
+     * Contains all books shown in the widget, this param is used
+     *  to get currently available books in the table.
      */
-    private final ObservableList<BookFile> obsBooks;
+    private final ObservableList<BookEntity> obsBooks;
 
-    public BookTable(Set <BookFile> books) {
+    public BookTable(Set <BookEntity> books) {
         super();
         obsBooks = FXCollections.observableArrayList();
         obsBooks.addAll(books);
@@ -48,34 +46,31 @@ public class BookTable extends TableView<BookFile> {
         });
     }
     private void setBookColumns(){
-        TableColumn <BookFile, String> colFileName = new TableColumn<>("File Name");
+        TableColumn <BookEntity, String> colFileName = new TableColumn<>("File Name");
         colFileName.prefWidthProperty().bind(widthProperty().multiply(0.85));
 
         colFileName.setCellValueFactory(
-                new PropertyValueFactory<BookFile, String>("fileName"));
+                new PropertyValueFactory<>("fileName"));
 
-        TableColumn <BookFile, String> colPercent = new TableColumn<>("Position");
+        TableColumn <BookEntity, String> colPercent = new TableColumn<>("Position");
         colPercent.prefWidthProperty().bind(widthProperty().multiply(0.15));
-        colPercent.setCellValueFactory(new Callback<CellDataFeatures<BookFile, String>,
-                ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<BookFile, String> p) {
-                int percent = (int)p.getValue().getPosition();
-                return new ReadOnlyObjectWrapper<String>(
-                        String.valueOf(percent) + "%");
-            }
-         });
+        colPercent.setCellValueFactory(cellData -> {
+            int percent = (int)cellData.getValue().getPosition();
+            return new ReadOnlyObjectWrapper<>(
+                    String.valueOf(percent) + "%");
+        });
 
         getColumns().addAll(colFileName, colPercent);
 
-        setRowFactory( tv -> {
-           TableRow<BookFile> row = new TableRow<>();
-            return row;
-        });
+        setRowFactory( tv -> new TableRow<BookEntity>());
         setContextMenu(addTableContextMenu());
     }
 
+    /**
+     * Set Popup Menu for the table.
+     * @return popup menu.
+     */
     private ContextMenu addTableContextMenu(){
-        // Set Popup Menu for the table.
         MenuItem removeBook = new MenuItem("Remove book from the library");
         removeBook.setOnAction(ev -> doRemoveSelectedBook());
 
@@ -84,7 +79,7 @@ public class BookTable extends TableView<BookFile> {
     private void doRemoveSelectedBook(){
         obsBooks.remove(getSelectionModel().getSelectedItem());
     }
-    public Set<BookFile> getBooks(){
-        return new HashSet<BookFile>(obsBooks);
+    public Set<BookEntity> getBooks(){
+        return new HashSet<>(obsBooks);
     }
 }

@@ -1,15 +1,16 @@
-/*******************************************************************************
- * Copyright (c) 2016 Pavel_M-v.
- *
- *******************************************************************************/
+/*
+ * Copyright (c) 2016-2018 Pavel_M-v.
+ */
 package pl.bookjpreader;
 
 import java.util.Random;
 
 public class MockBook {
 
-    public static String getBook() {
-        // Generate a test book.
+    /**
+    * Generate a test book.
+    */
+    static String getBook() {
 
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         Random random = new Random();
