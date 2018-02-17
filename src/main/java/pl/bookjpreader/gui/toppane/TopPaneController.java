@@ -10,7 +10,11 @@ import pl.bookjpreader.booksfactory.BookHandler;
 import pl.bookjpreader.commons.ProgramRegistry;
 import pl.bookjpreader.commons.items.CurrentBook;
 import pl.bookjpreader.commons.items.MinorOptions;
-import pl.bookjpreader.commons.items.actions.*;
+import pl.bookjpreader.commons.items.actions.OpenNewBookAction;
+import pl.bookjpreader.commons.items.actions.SelectNewScrollSpeedAction;
+import pl.bookjpreader.commons.items.actions.SelectNewTextPositionAction;
+import pl.bookjpreader.commons.items.actions.StopAnimationAction;
+import pl.bookjpreader.commons.items.actions.UpdateTextPositionAction;
 import pl.bookjpreader.gui.MenuActions;
 import pl.bookjpreader.gui.ViewController;
 
@@ -28,11 +32,11 @@ public class TopPaneController implements ViewController<TopPane> {
         final ProgramRegistry registry = ProgramRegistry.INSTANCE;
         setInitialValues(registry);
         topPane.setPercentActionHandler(percent ->
-            registry.getForClass(SelectNewTextPositionAction.class).fire(percent));
+            registry.submitAction(SelectNewTextPositionAction.class, percent));
         topPane.setSpeedActionHandler(speed ->
-            registry.getForClass(SelectNewScrollSpeedAction.class).fire(speed));
+            registry.submitAction(SelectNewScrollSpeedAction.class, speed));
         topPane.setStopAnimationActionHandler(() ->
-            registry.getForClass(StopAnimationAction.class).fire());
+            registry.submitAction(StopAnimationAction.class));
         topPane.setMenuItems(MenuActions.getMenuItems(stage));
 
         registry.getForClass(OpenNewBookAction.class)

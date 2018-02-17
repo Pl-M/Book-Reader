@@ -5,12 +5,11 @@
 !*/
 # Include files
 !/.gitignore
-!/pom.xml
 !/*.gradle
 !/*.txt
 !/*.jpg
 # Recursively allow files under subtrees
-!/src/**/*.java
+!/src/**/*.*
 !/target/**/*.jar
 
 

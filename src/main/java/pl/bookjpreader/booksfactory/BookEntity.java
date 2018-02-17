@@ -52,7 +52,7 @@ public class BookEntity{
         }
 
         BookEntity bookFile = (BookEntity)obj;
-        return bookFile.filePath.equals(this.filePath);
+        return bookFile.getFilePath().equals(this.getFilePath());
     }
     @Override
     public int hashCode( ){

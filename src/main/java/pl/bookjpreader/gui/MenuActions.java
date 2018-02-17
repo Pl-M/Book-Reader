@@ -5,7 +5,11 @@
 package pl.bookjpreader.gui;
 
 
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -50,7 +54,7 @@ public enum MenuActions {
         protected void execute(final Stage stage) {
             final ProgramRegistry registry = ProgramRegistry.INSTANCE;
 
-            registry.getForClass(StopAnimationAction.class).fire();
+            registry.submitAction(StopAnimationAction.class);
 
             BookChooser bookChooser = new BookChooser(stage);
 
@@ -63,8 +67,7 @@ public enum MenuActions {
                     book = new BookEntity(fileName.toPath(),
                             bookChooser.getEncoding());
                 }
-                registry.getForClass(OpenNewBookAction.class)
-                        .fire(book);
+                registry.submitAction(OpenNewBookAction.class, book);
             }
         }
     },
@@ -88,7 +91,7 @@ public enum MenuActions {
         protected void execute(final Stage stage) {
             final ProgramRegistry registry = ProgramRegistry.INSTANCE;
 
-            registry.getForClass(StopAnimationAction.class).fire();
+            registry.submitAction(StopAnimationAction.class);
             new BookShelfDialog(stage, registry.getForClass(
                     BookShelf.class)).showAndWait();
         }
@@ -103,7 +106,7 @@ public enum MenuActions {
         protected void execute(final Stage stage) {
             final ProgramRegistry registry = ProgramRegistry.INSTANCE;
 
-            registry.getForClass(StopAnimationAction.class).fire();
+            registry.submitAction(StopAnimationAction.class);
             new SettingsDialog(stage, registry.getForClass(
                     DisplayOptions.class)).showAndWait();
         }
@@ -125,7 +128,7 @@ public enum MenuActions {
         protected void execute(final Stage stage) {
             final ProgramRegistry registry = ProgramRegistry.INSTANCE;
 
-            registry.getForClass(StopAnimationAction.class).fire();
+            registry.submitAction(StopAnimationAction.class);
 
             final TextInputDialog dialog = new TextInputDialog();
             dialog.initOwner(stage);
@@ -148,8 +151,8 @@ public enum MenuActions {
                     info.setContentText("Nothing was found");
                     info.showAndWait();
                 } else{
-                    registry.getForClass(SelectNewTextPositionAction.class)
-                            .fire(foundPercentPos);
+                    registry.submitAction(SelectNewTextPositionAction.class,
+                            foundPercentPos);
                 }
             });
         }
@@ -211,7 +214,7 @@ public enum MenuActions {
 
         @Override
         protected void execute(final Stage stage) {
-            ProgramRegistry.INSTANCE.getForClass(StopAnimationAction.class).fire();
+            ProgramRegistry.INSTANCE.submitAction(StopAnimationAction.class);
 
             Alert info = new Alert(Alert.AlertType.INFORMATION);
             info.initOwner(stage);

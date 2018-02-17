@@ -105,8 +105,8 @@ public class SettingsDialog extends Stage{
         for (Node pane:panels.values())
             ((SettingsPane)pane).applySettings();
 
-        ProgramRegistry.INSTANCE.getForClass(UpdateDisplayOptionsAction.class)
-                .fire(displayOptions);
+        ProgramRegistry.INSTANCE.submitAction(
+                UpdateDisplayOptionsAction.class, displayOptions);
 
         close();
     }

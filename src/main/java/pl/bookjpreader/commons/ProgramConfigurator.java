@@ -14,10 +14,22 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
+
 import pl.bookjpreader.commons.filesys.BookShelfFileHandler;
 import pl.bookjpreader.commons.filesys.SettingsFileHandler;
-import pl.bookjpreader.commons.items.*;
-import pl.bookjpreader.commons.items.actions.*;
+import pl.bookjpreader.commons.items.BookShelf;
+import pl.bookjpreader.commons.items.CurrentBook;
+import pl.bookjpreader.commons.items.DisplayOptions;
+import pl.bookjpreader.commons.items.MinorOptions;
+import pl.bookjpreader.commons.items.actions.LoadAction;
+import pl.bookjpreader.commons.items.actions.OpenNewBookAction;
+import pl.bookjpreader.commons.items.actions.SaveAction;
+import pl.bookjpreader.commons.items.actions.SelectNewScrollSpeedAction;
+import pl.bookjpreader.commons.items.actions.SelectNewTextPositionAction;
+import pl.bookjpreader.commons.items.actions.StopAnimationAction;
+import pl.bookjpreader.commons.items.actions.UpdateDisplayOptionsAction;
+import pl.bookjpreader.commons.items.actions.UpdateTextPositionAction;
+
 
 /**
  * This class started in the beginning of the program and initializes registry and
@@ -64,7 +76,7 @@ public class ProgramConfigurator {
 
 
         // Load settings.
-        pr.getForClass(LoadAction.class).fire();
+        pr.submitAction(LoadAction.class);
 
     }
 

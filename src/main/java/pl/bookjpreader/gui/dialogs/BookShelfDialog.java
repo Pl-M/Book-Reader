@@ -90,8 +90,7 @@ public class BookShelfDialog extends Stage{
         // Open selected book.
         BookEntity book = bookTable.getSelectionModel().getSelectedItem();
         if (book != null) {
-            ProgramRegistry.INSTANCE
-                    .getForClass(OpenNewBookAction.class).fire(book);
+            ProgramRegistry.INSTANCE.submitAction(OpenNewBookAction.class, book);
             //bookShelf.openNewBook(book);
         }
         close();

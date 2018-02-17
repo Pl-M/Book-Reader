@@ -41,16 +41,16 @@ public final class FileParserResolver {
      * @param filePath: path of the file to get its extension;
      * @return extension of the file.
      */
-    private static String getExt(Path filePath){
+    private static String getExt(Path filePath) {
         String fileExt;
         String fileName = filePath.getFileName().toString();
 
         int start = fileName.lastIndexOf('.');
-        if (start == -1) // no extension found
+        if (start == -1) {// no extension found
             fileExt = null;
-        else
-            fileExt = fileName.substring(start+1).toLowerCase();
-
+        } else {
+            fileExt = fileName.substring(start + 1).toLowerCase();
+        }
         return fileExt;
     }
 }

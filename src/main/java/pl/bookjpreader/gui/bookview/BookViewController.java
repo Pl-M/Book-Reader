@@ -16,7 +16,12 @@ import pl.bookjpreader.commons.ThreadUtils;
 import pl.bookjpreader.commons.items.CurrentBook;
 import pl.bookjpreader.commons.items.DisplayOptions;
 import pl.bookjpreader.commons.items.MinorOptions;
-import pl.bookjpreader.commons.items.actions.*;
+import pl.bookjpreader.commons.items.actions.OpenNewBookAction;
+import pl.bookjpreader.commons.items.actions.SelectNewScrollSpeedAction;
+import pl.bookjpreader.commons.items.actions.SelectNewTextPositionAction;
+import pl.bookjpreader.commons.items.actions.StopAnimationAction;
+import pl.bookjpreader.commons.items.actions.UpdateDisplayOptionsAction;
+import pl.bookjpreader.commons.items.actions.UpdateTextPositionAction;
 import pl.bookjpreader.gui.ViewController;
 import pl.bookjpreader.gui.bookview.textwidget.TextImage;
 import pl.bookjpreader.gui.bookview.textwidget.TextImageFactory;
@@ -56,7 +61,7 @@ public final class BookViewController implements ViewController<BookView> {
 
         bookViewWidget.setTextPositionUpdateHandler(newOffsetPos -> {
             final double percentPos = bookHandler.getPercentFromOffset(newOffsetPos);
-            registry.getForClass(UpdateTextPositionAction.class).fire(percentPos);
+            registry.submitAction(UpdateTextPositionAction.class, percentPos);
         });
         bookViewWidget.setTextSelectionActionHandler(text -> {
             if (text != null) {

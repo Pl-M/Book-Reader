@@ -100,8 +100,9 @@ public class BookShelfFileHandler implements FileHandler {
         if (nList != null && nList.getLength() > 0){
             Element el = (Element)nList.item(0);
             Path filePath = Paths.get(el.getAttribute(Headers.FILENAME.toString()));
-            ProgramRegistry.INSTANCE.getForClass(OpenNewBookAction.class)
-                    .fire(bookShelf.getBook(filePath));
+            ProgramRegistry.INSTANCE.submitAction(
+                    OpenNewBookAction.class, bookShelf.getBook(filePath));
+
         }
     }
     /**

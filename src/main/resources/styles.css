@@ -1,0 +1,5 @@
+
+.top-pane .menu-button {
+    -fx-background-radius: 0 0 10 0;
+    -fx-border-color: transparent;
+}

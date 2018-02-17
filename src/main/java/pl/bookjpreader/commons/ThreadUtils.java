@@ -7,7 +7,11 @@ package pl.bookjpreader.commons;
 import javafx.application.Platform;
 import pl.bookjpreader.commons.items.RegistryElement;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Main class for multithreading programming.

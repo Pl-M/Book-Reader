@@ -48,7 +48,7 @@ public class App extends Application {
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         // Save settings before exiting.
         primaryStage.setOnCloseRequest(e -> {
-            registry.getForClass(SaveAction.class).fire();
+            registry.submitAction(SaveAction.class);
             registry.dispose();
             Platform.exit();
         });
