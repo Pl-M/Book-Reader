@@ -363,9 +363,11 @@ public final class BookView extends SelectionPane {
     }
 
     private void moveToBegin(){
+        stopAnimation();
         redraw(MIN_OFFSET);
     }
     private void moveToEnd(){
+        stopAnimation();
         TextImageParametersBuilder params = new TextImageParametersBuilder();
         params.setDirection(TextImageParametersBuilder.Direction.END)
                 .setLineSpacing(lineSpacing)
