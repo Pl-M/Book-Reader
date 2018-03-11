@@ -32,11 +32,13 @@ import pl.bookjpreader.commons.items.actions.UpdateTextPositionAction;
 
 
 /**
- * This class started in the beginning of the program and initializes registry and
+ * This class starts in the beginning of the program and initializes registry and
  * all settings.
- * Other parts of the program can get settings from this class.
  */
 public class ProgramConfigurator {
+    private static String SETTINGS_FILENAME = "brsettings.ini";
+    private static String BOOKS_FILENAME = "brbooks.xml";
+
     private static String I18N_RESOURCE = "i18n.messages";
 
     public ProgramConfigurator() {
@@ -106,8 +108,8 @@ public class ProgramConfigurator {
         Path booksPath;
 
         if (dir != null){
-            settingsPath = Paths.get(dir.toString(), FileNames.SETTINGS.toString());
-            booksPath = Paths.get(dir.toString(), FileNames.BOOKS.toString());
+            settingsPath = Paths.get(dir.toString(), SETTINGS_FILENAME);
+            booksPath = Paths.get(dir.toString(), BOOKS_FILENAME);
         }
         else {
             settingsPath = null;
@@ -122,8 +124,6 @@ public class ProgramConfigurator {
 
         pr.register(new SettingsFileHandler(settingsPath));
         pr.register(new BookShelfFileHandler(booksPath));
-
-
     }
 
     /**
@@ -144,19 +144,4 @@ public class ProgramConfigurator {
             return null;
     }
 
-}
-
-enum FileNames{
-    SETTINGS("brsettings.ini"),
-    BOOKS("brbooks.xml");
-
-    private String name;
-
-    FileNames(String name){
-        this.name = name;
-    }
-    @Override
-    public String toString() {
-        return name;
-    }
 }
