@@ -36,10 +36,10 @@ import pl.bookjpreader.commons.items.actions.UpdateTextPositionAction;
  * all settings.
  */
 public class ProgramConfigurator {
-    private static String SETTINGS_FILENAME = "brsettings.ini";
-    private static String BOOKS_FILENAME = "brbooks.xml";
+    private static final String SETTINGS_FILENAME = "brsettings.ini";
+    private static final String BOOKS_FILENAME = "brbooks.xml";
 
-    private static String I18N_RESOURCE = "i18n.messages";
+    private static final String I18N_RESOURCE = "i18n.messages";
 
     public ProgramConfigurator() {
         final ProgramRegistry pr = ProgramRegistry.INSTANCE;
